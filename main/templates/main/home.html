@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 style="text-align: center;">REST</h1>
+
+    <ul>
+        <h1>Serializer</h1>
+        <li>Before sending data to client we need to seialize it to json format</li>
+        <li>Api always give data in json format and clients interact with json format data</li>
+        <li>Serializers are used to convert querysets/model instances to native Python datatypes which can be rendered as XML/JSON </li>
+        <li>Serializers are also used to deserialize the parsed data back into complex data structure/querysets</li>
+        <li><h4>Mking use of serialize class that we created to serialize the data in our database</h4></li>
+        <li style="background-color: black;color: white;">
+
+            >>> from main.models import article
+           <br> >>> from main.serializers import articleSerializer
+            <br>>>> from rest_framework.renderers import JSONRenderer
+           <br> >>> from rest_framework.parsers import JSONParser
+            <br>>>> a= article(title='Hello',author='Mk',email='mk@k.com')
+            <br>>>> a.save()
+            <br>>>> a= article(title='HelloWorld',author='Mk',email='mk@k.com')
+            <br>>>> a.save()
+            <br>>>> serializer = articleSerializer(a)
+            <br>>>> serializer.data
+          <br>  {'title': 'HelloWorld', 'author': 'Mk', 'email': 'mk@k.com', 'date': '2022-01-07T09:17:41.302445Z'}
+            <br>>>> content = JSONRenderer().render(serializer.data)
+            <br>>>> content
+           <br> b'{"title":"HelloWorld","author":"Mk","email":"mk@k.com","date":"2022-01-07T09:17:41.302445Z"}'
+            <br>>>> serializer = articleSerializer(article.objects.all(),many=True)
+            <br>>>> serializer.data
+            [OrderedDict([('title', 'Hello'), ('author', 'Mk'), ('email', 'mk@k.com'), ('date', '2022-01-07T09:16:38.820059Z')]), OrderedDict([('title', 'HelloWorld'), ('author', 'Mk'), ('email', 'mk@k.com'), ('date', '2022-01-07T09:17:41.302445Z')])]
+            >>> 
+
+        </li>
+
+        <li> <h4>Data fetched</h4>
+            [
+                {
+                    "title": "Hello",
+                    "author": "Mk",
+                    "email": "mk@k.com",
+                    "date": "2022-01-07T09:16:38.820059Z"
+                }, <br>
+                {
+                    "title": "HelloWorld",
+                    "author": "Mk",
+                    "email": "mk@k.com",
+                    "date": "2022-01-07T09:17:41.302445Z"
+                }
+            ]
+        </li>
+
+    </ul>
+</body>
+</html>
