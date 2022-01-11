@@ -6,4 +6,4 @@ from .models import article
 
 @admin.register(article)
 class articleAdmin(admin.ModelAdmin):
-    list_display = ['title','author','email','date']
+    list_display = ['idd','title','author','email','date']
