@@ -4,7 +4,6 @@ from .models import article
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 
-from main.models import article
 
 # Create your views here.
 
@@ -18,3 +17,13 @@ def serializeddata(request):
     json_data= JSONRenderer().render(serialized.data)
 
     return HttpResponse(json_data,content_type='application/json')
+
+def get(request,id):
+    if article.objects.filter(idd=id).exists():
+        articles = article.objects.get(idd=id)
+        print(articles)
+        serialized = articleSerializer(articles)
+        json_data = JSONRenderer().render(serialized.data)
+        return HttpResponse(json_data,content_type='application/json')
+    else:
+        return HttpResponse('Bad Request',content_type='application/json')
