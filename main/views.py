@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from .serializers import articleSerializer
@@ -10,6 +11,31 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework import mixins, generics
+
+
+#ListModelMixin = used to give all data from database
+#CreateModelMixin = used to update data in database
+class GenericAPIView(generics.GenericAPIView,mixins.ListModelMixin,mixins.CreateModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,mixins.DestroyModelMixin):
+    serializer_class = articleSerializer
+    queryset = article.objects.all()
+
+    lookup_field = 'id'
+
+    def get(self,request,id=None):
+        if id:
+            return self.retrieve(request)
+        return self.list(request)
+
+    def post(self,request):
+        return self.create(request)
+    
+    def put(self,request,id=None):
+        return self.update(request,id)
+
+    def delete(self,request,id):
+        return self.destroy(request,id)
+
 
 # Create your views here.
 

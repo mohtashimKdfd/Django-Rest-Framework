@@ -7,5 +7,6 @@ urlpatterns = [
     path('gett/<int:id>',views.get),
     # path('details/<int:pk>',views.articleDetails),
     path('details/<int:pk>',views.ArticleDetalsAPIView.as_view()),
-    path('get',views.ArticleAPIView.as_view())
+    path('get',views.ArticleAPIView.as_view()),
+    path('generic/get/<int:id>',views.GenericAPIView.as_view())
 ]
