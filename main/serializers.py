@@ -23,4 +23,7 @@ from .models import article
 class articleSerializer(serializers.ModelSerializer):
     class Meta:
         model = article
-        fields = ['idd','title','author','email','date']
+        # fields = ['idd','title','author','email','date']
+
+        #or we can just do that
+        fields = '__all__'

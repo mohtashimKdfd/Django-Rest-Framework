@@ -62,29 +62,59 @@ def get(request,id):
         else:
             return HttpResponse('Bad Request',content_type='application/json')
 
-@csrf_exempt
+# @csrf_exempt
+# def articleDetails(request,pk):
+#     try:
+#         targetArticle = article.objects.get(idd=pk)
+
+#     except article.DoesNotExist:
+#         return HttpResponse("Data not found",content_type='application/json')
+    
+#     if request.method == 'GET':
+#         serializer = articleSerializer(targetArticle)
+#         return JsonResponse(serializer.data)
+
+#     elif request.method == 'PUT':
+#         data = JSONParser().parse(request)
+#         serializer = articleSerializer(targetArticle,data=data)
+        
+#         #check if the serialized data is valid
+
+#         if serializer.is_valid():
+#             serializer.save()
+#             return HttpResponse(serializer.data,status=201)
+#         return HttpResponse(serializer.errors,status=400)
+    
+#     elif request.method == 'DELETE':
+#         targetArticle.delete()
+#         return HttpResponse(status=204)
+
+
+#using api_view thing
+
+@api_view(['GET','PUT','DELETE'])
 def articleDetails(request,pk):
     try:
         targetArticle = article.objects.get(idd=pk)
 
     except article.DoesNotExist:
-        return HttpResponse("Data not found",content_type='application/json')
+        return Response(status=status.HTTP_404_NOT_FOUND)
     
     if request.method == 'GET':
         serializer = articleSerializer(targetArticle)
-        return JsonResponse(serializer.data)
+        return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = articleSerializer(targetArticle,data=data)
+        # data = JSONParser().parse(request)
+        serializer = articleSerializer(targetArticle,data=request.data)
         
         #check if the serialized data is valid
 
         if serializer.is_valid():
             serializer.save()
-            return HttpResponse(serializer.data,status=201)
-        return HttpResponse(serializer.errors,status=400)
+            return Response(serializer.data)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
         targetArticle.delete()
-        return HttpResponse(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
