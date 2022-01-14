@@ -1,6 +1,5 @@
 from django.http.response import JsonResponse
 from django.shortcuts import render
-from rest_framework import serializers
 from .serializers import articleSerializer
 from .models import article
 from rest_framework.renderers import JSONRenderer
@@ -42,3 +41,30 @@ def get(request,id):
             return HttpResponse(json_data,content_type='application/json')
         else:
             return HttpResponse('Bad Request',content_type='application/json')
+
+@csrf_exempt
+def articleDetails(request,pk):
+    try:
+        targetArticle = article.objects.get(idd=pk)
+
+    except article.DoesNotExist:
+        return HttpResponse("Data not found",content_type='application/json')
+    
+    if request.method == 'GET':
+        serializer = articleSerializer(targetArticle)
+        return JsonResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = articleSerializer(targetArticle,data=data)
+        
+        #check if the serialized data is valid
+
+        if serializer.is_valid():
+            serializer.save()
+            return HttpResponse(serializer.data,status=201)
+        return HttpResponse(serializer.errors,status=400)
+    
+    elif request.method == 'DELETE':
+        targetArticle.delete()
+        return HttpResponse(status=204)
