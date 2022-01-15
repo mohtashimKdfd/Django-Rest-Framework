@@ -28,6 +28,6 @@ class articleSerializer(serializers.ModelSerializer):
         #or we can just do that
         fields = '__all__'
 
-    def validate_idd(self, id):
-        if id<10:
-            raise serializers.ValidationError('Id should be greater than 10')
+    # def validate_idd(self, id):
+    #     if id<10:
+    #         raise serializers.ValidationError('Id should be greater than 10')
