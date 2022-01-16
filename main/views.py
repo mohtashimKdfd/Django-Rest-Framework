@@ -1,4 +1,3 @@
-from django.db.models.query import QuerySet
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from .serializers import articleSerializer
@@ -15,7 +14,7 @@ from rest_framework import mixins, generics
 
 #For Authentications
 from rest_framework.authentication import BasicAuthentication , SessionAuthentication,TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated , IsAuthenticatedOrReadOnly
 
 
 #ListModelMixin = used to give all data from database
@@ -26,10 +25,10 @@ class GenericAPIView(generics.GenericAPIView,mixins.ListModelMixin,mixins.Create
 
     lookup_field = 'id'
 
-    # authentication_classes = [SessionAuthentication,BasicAuthentication]
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [SessionAuthentication,BasicAuthentication]
+    # authentication_classes = [TokenAuthentication]
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self,request,id=None):
         if id:
@@ -72,6 +71,8 @@ def home(request):
 #Same thing but making the use of api_view decorator
 @api_view(['GET','POST'])
 # @authentication_classes([TokenAuthentication])
+@authentication_classes([BasicAuthentication,SessionAuthentication])
+@permission_classes([IsAuthenticatedOrReadOnly])
 # @permission_classes([IsAuthenticated])
 def serializeddata(request):
     if request.method == 'GET':
@@ -88,6 +89,7 @@ def serializeddata(request):
             return JsonResponse(serializer.data,status=status.HTTP_201_CREATED)
         return JsonResponse(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+# permisssion_classes = [AllowAny] is used to allow any user ro read/write and is also used to override global authentication
 
 def get(request,id):
     if request.method == 'GET':
