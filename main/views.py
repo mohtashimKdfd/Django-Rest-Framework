@@ -71,8 +71,8 @@ def home(request):
 
 #Same thing but making the use of api_view decorator
 @api_view(['GET','POST'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def serializeddata(request):
     if request.method == 'GET':
         articles = article.objects.all()
