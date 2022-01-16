@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 from rest_framework import mixins, generics
 
 #For Authentications
-from rest_framework.authentication import BasicAuthentication , SessionAuthentication
+from rest_framework.authentication import BasicAuthentication , SessionAuthentication,TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -26,7 +26,9 @@ class GenericAPIView(generics.GenericAPIView,mixins.ListModelMixin,mixins.Create
 
     lookup_field = 'id'
 
-    authentication_classes = [SessionAuthentication,BasicAuthentication]
+    # authentication_classes = [SessionAuthentication,BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
+
     permission_classes = [IsAuthenticated]
 
     def get(self,request,id=None):
@@ -69,7 +71,7 @@ def home(request):
 
 #Same thing but making the use of api_view decorator
 @api_view(['GET','POST'])
-@authentication_classes([BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def serializeddata(request):
     if request.method == 'GET':
