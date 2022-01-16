@@ -14,7 +14,7 @@ from rest_framework import mixins, generics
 
 #For Authentications
 from rest_framework.authentication import BasicAuthentication , SessionAuthentication,TokenAuthentication
-from rest_framework.permissions import IsAuthenticated , IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated , IsAuthenticatedOrReadOnly , DjangoModelPermissions
 
 
 #ListModelMixin = used to give all data from database
@@ -28,7 +28,9 @@ class GenericAPIView(generics.GenericAPIView,mixins.ListModelMixin,mixins.Create
     authentication_classes = [SessionAuthentication,BasicAuthentication]
     # authentication_classes = [TokenAuthentication]
 
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [DjangoModelPermissions]
+
 
     def get(self,request,id=None):
         if id:
