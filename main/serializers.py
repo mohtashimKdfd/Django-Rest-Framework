@@ -23,10 +23,10 @@ from .models import article
 class articleSerializer(serializers.ModelSerializer):
     class Meta:
         model = article
-        # fields = ['idd','title','author','email','date']
+        fields = ['idd','title','author','email','date']
 
         #or we can just do that
-        fields = '__all__'
+        # fields = '__all__'
 
     # def validate_idd(self, id):
     #     if id<10:

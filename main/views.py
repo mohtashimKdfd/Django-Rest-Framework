@@ -201,9 +201,9 @@ class ArticleDetalsAPIView(APIView):
             return HttpResponse('Not Found',status=status.HTTP_404_NOT_FOUND,content_type='application/json')
     
     def put(self,request,pk):
-        data = JSONParser().parse(request)
+        # data = JSONParser().parse(request)
         targetArticle = self.get_object(pk)
-        serialized = articleSerializer(targetArticle,data=data)
+        serialized = articleSerializer(targetArticle,data=request.data)
 
         if serialized.is_valid():
             serialized.save()
