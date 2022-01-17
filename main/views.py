@@ -73,8 +73,8 @@ def home(request):
 #Same thing but making the use of api_view decorator
 @api_view(['GET','POST'])
 # @authentication_classes([TokenAuthentication])
-@authentication_classes([BasicAuthentication,SessionAuthentication])
-@permission_classes([IsAuthenticatedOrReadOnly])
+# @authentication_classes([BasicAuthentication,SessionAuthentication])
+# @permission_classes([IsAuthenticatedOrReadOnly])
 # @permission_classes([IsAuthenticated])
 def serializeddata(request):
     if request.method == 'GET':
@@ -217,3 +217,4 @@ class ArticleDetalsAPIView(APIView):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
         
+
